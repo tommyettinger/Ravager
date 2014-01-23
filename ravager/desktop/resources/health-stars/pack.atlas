@@ -1,0 +1,468 @@
+
+pack.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+health-red
+  rotate: false
+  xy: 2, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+
+pack2.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+health/0
+  rotate: false
+  xy: 2, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health/1
+  rotate: false
+  xy: 24, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health/10
+  rotate: false
+  xy: 46, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health/11
+  rotate: false
+  xy: 68, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health/12
+  rotate: false
+  xy: 90, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health/13
+  rotate: false
+  xy: 112, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health/14
+  rotate: false
+  xy: 134, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health/15
+  rotate: false
+  xy: 156, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health/16
+  rotate: false
+  xy: 178, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health/17
+  rotate: false
+  xy: 200, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health/18
+  rotate: false
+  xy: 222, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health/19
+  rotate: false
+  xy: 244, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health/2
+  rotate: false
+  xy: 266, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health/20
+  rotate: false
+  xy: 288, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health/3
+  rotate: false
+  xy: 310, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health/4
+  rotate: false
+  xy: 332, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health/5
+  rotate: false
+  xy: 354, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health/6
+  rotate: false
+  xy: 376, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health/7
+  rotate: false
+  xy: 398, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health/8
+  rotate: false
+  xy: 420, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health/9
+  rotate: false
+  xy: 442, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+
+pack3.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+health-mob/0
+  rotate: false
+  xy: 2, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-mob/1
+  rotate: false
+  xy: 24, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-mob/10
+  rotate: false
+  xy: 46, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-mob/11
+  rotate: false
+  xy: 68, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-mob/12
+  rotate: false
+  xy: 90, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-mob/13
+  rotate: false
+  xy: 112, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-mob/14
+  rotate: false
+  xy: 134, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-mob/15
+  rotate: false
+  xy: 156, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-mob/16
+  rotate: false
+  xy: 178, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-mob/17
+  rotate: false
+  xy: 200, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-mob/18
+  rotate: false
+  xy: 222, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-mob/19
+  rotate: false
+  xy: 244, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-mob/2
+  rotate: false
+  xy: 266, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-mob/20
+  rotate: false
+  xy: 288, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-mob/3
+  rotate: false
+  xy: 310, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-mob/4
+  rotate: false
+  xy: 332, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-mob/5
+  rotate: false
+  xy: 354, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-mob/6
+  rotate: false
+  xy: 376, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-mob/7
+  rotate: false
+  xy: 398, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-mob/8
+  rotate: false
+  xy: 420, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-mob/9
+  rotate: false
+  xy: 442, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+
+pack4.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+health-pc/0
+  rotate: false
+  xy: 2, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-pc/1
+  rotate: false
+  xy: 24, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-pc/10
+  rotate: false
+  xy: 46, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-pc/11
+  rotate: false
+  xy: 68, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-pc/12
+  rotate: false
+  xy: 90, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-pc/13
+  rotate: false
+  xy: 112, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-pc/14
+  rotate: false
+  xy: 134, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-pc/15
+  rotate: false
+  xy: 156, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-pc/16
+  rotate: false
+  xy: 178, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-pc/17
+  rotate: false
+  xy: 200, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-pc/18
+  rotate: false
+  xy: 222, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-pc/19
+  rotate: false
+  xy: 244, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-pc/2
+  rotate: false
+  xy: 266, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-pc/20
+  rotate: false
+  xy: 288, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-pc/3
+  rotate: false
+  xy: 310, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-pc/4
+  rotate: false
+  xy: 332, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-pc/5
+  rotate: false
+  xy: 354, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-pc/6
+  rotate: false
+  xy: 376, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-pc/7
+  rotate: false
+  xy: 398, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-pc/8
+  rotate: false
+  xy: 420, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
+health-pc/9
+  rotate: false
+  xy: 442, 2
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: -1
