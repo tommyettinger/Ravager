@@ -7,33 +7,22 @@
 
 (set! *warn-on-reflection* true)
 
-(defmacro +_ [a b] `(+ (long ~a) (long ~b)))
-(defmacro -_ [a b] `(- (long ~a) (long ~b)))
-(defmacro *_ [a b] `(* (long ~a) (long ~b)))
-(defmacro div_ [a b] `(/ (long ~a) (long ~b)))
-(defmacro rem_  [a b] `(rem  (long ~a) (long ~b)))
-(defmacro quot_ [a b] `(quot (long ~a) (long ~b)))
-(defmacro >_ [a b] `(> (long ~a) (long ~b)))
-(defmacro <_ [a b] `(< (long ~a) (long ~b)))
-(defmacro >=_ [a b] `(>= (long ~a) (long ~b)))
-(defmacro <=_ [a b] `(<= (long ~a) (long ~b)))
+(def ^:const wide 33)
+(def ^:const high 33)
+(def ^:const iw (- wide 2)) ;inner width
+(def ^:const ih (- high 2)) ;inner height
 
-(def wide (long 33))
-(def high (long 33))
-(def iw (-_ wide 2)) ;inner width
-(def ih (-_ high 2)) ;inner height
+(def ^:const wall 9999.0)
+(def ^:const floor 2000.0)
+(def ^:const dark 11111.0)
 
-(def wall (double 9999.0))
-(def floor (double 2000.0))
-(def dark (double 11111.0))
-
-(def GOAL (double 0.0))
+(def ^:const GOAL 0.0)
 
 (def cleared-levels (atom {}))
 (def dlevel (atom 0))
 (def res (atom (make-array Float/TYPE wide high)))
-(defn ^"[Z" init-full-seen [] (let [ ^"[Z" res1d (make-array Boolean/TYPE (*_ wide high))]
-                   (doseq [i (range (*_ wide high))]
+(defn ^"[Z" init-full-seen [] (let [ ^"[Z" res1d (make-array Boolean/TYPE (* wide high))]
+                   (doseq [i (range (* wide high))]
                      (aset ^"[Z" res1d i false))
                      res1d))
 
@@ -48,82 +37,82 @@
         initial (horiz seed)
         hvec (mapv #(mapv vec %) horiz)
         vvec (mapv #(mapv vec %) vert)
-        oh (+_ 20 ih)
-        ow (+_ 20 iw)
-        initial (hiphip/amake [i (*_ ow oh)] wall)
-        shown (char-array (*_ ow oh) \#)]
+        oh (+ 20 ih)
+        ow (+ 20 iw)
+        initial (hiphip/amake [i (* ow oh)] wall)
+        shown (char-array (* ow oh) \#)]
     (loop [next-fill 0 started-indent 0]
-      (if (>=_ (+_ (*_ 10 ow ) next-fill) (*_ ow oh))
+      (if (>= (+ (* 10 ow ) next-fill) (* ow oh))
           initial
           (let [hofull (rand-nth hvec)
                     ho (mapv #(replace {\# wall \. floor \$ floor \~ floor \% floor \+ floor} %) hofull)]
-            (when (<_ (+_ 20 (+_ (*_ 10 ow) next-fill)) (*_ ow oh))
+            (when (< (+ 20 (+ (* 10 ow) next-fill)) (* ow oh))
                 (doseq [nf (range 10)]
-                                       (hiphip/afill! [[i eh] initial :range [(+_ (*_ ow nf) next-fill) (+_ 20 (+_ (*_ ow nf) next-fill))]]
-                                                                  (nth (nth ho nf) (-_ (-_ i (*_ ow nf)) next-fill)))
-                                       (harray/afill! Character/TYPE [[i eh] shown :range [(+_ (*_ ow nf) next-fill) (+_ 20 (+_ (*_ ow nf) next-fill))]]
-                                                                  (nth (nth hofull nf) (-_ (-_ i (*_ ow nf)) next-fill)))))
+                                       (hiphip/afill! [[i eh] initial :range [(+ (* ow (long nf)) next-fill) (+ 20 (+ (* ow (long nf)) next-fill))]]
+                                                                  (nth (nth ho nf) (- (- i (* ow (long nf))) next-fill)))
+                                       (harray/afill! Character/TYPE [[i eh] shown :range [(+ (* ow (long nf)) next-fill) (+ 20 (+ (* ow (long nf)) next-fill))]]
+                                                                  (nth (nth hofull nf) (- (- i (* ow (long nf))) next-fill)))))
                 (recur
                  (long
-                   (if (<_ (rem_ (+_ 40 next-fill) ow) (rem_ next-fill ow))
+                   (if (< (rem (+ 40 next-fill) ow) (rem next-fill ow))
                      (condp = started-indent
-                       0 (+_ (+_ (*_ ow 10) 10) (-_ next-fill (rem_ next-fill ow )))
-                       1 (+_ (+_ (*_ ow 10) 20) (-_ next-fill (rem_ next-fill ow )))
-                       2 (+_ (+_ (*_ ow 10) 30) (-_ next-fill (rem_ next-fill ow )))
-                       3 (+_     (*_ ow 10)     (-_ next-fill (rem_ next-fill ow )))
+                       0 (+ (+ (* ow 10) 10) (- next-fill (rem next-fill ow )))
+                       1 (+ (+ (* ow 10) 20) (- next-fill (rem next-fill ow )))
+                       2 (+ (+ (* ow 10) 30) (- next-fill (rem next-fill ow )))
+                       3 (+     (* ow 10)     (- next-fill (rem next-fill ow )))
                        )
-                     (+_ 40 next-fill) ) )
-                 (long (if (<_ (rem_ (+_ 40 next-fill) ow) (rem_ next-fill ow))
-                   (rem_ (+_ 1 started-indent) 4)
+                     (+ 40 next-fill) ) )
+                 (long (if (< (rem (+ 40 next-fill) ow) (rem next-fill ow))
+                   (rem (+ 1 started-indent) 4)
                    started-indent))
                  ))))
-    (loop [next-fill (*_ 10 ow) started-indent 1]
-      (if (>=_ (+_ 10 (rem_ next-fill ow)) ow)
+    (loop [next-fill (* 10 ow) started-indent 1]
+      (if (>= (+ 10 (rem next-fill ow)) ow)
           initial
         (let [vefull (rand-nth vvec)
                     ve (mapv #(replace {\# wall \. floor \$ floor \~ floor \% floor \+ floor} %) vefull)]
-                (when (<_ (+_ (+_ (*_ 19 ow) 10) next-fill) (*_ ow oh))
-                  (doseq [nf (range 20)] (hiphip/afill! [[i eh] initial :range [(+_ (*_ ow nf) next-fill) (+_ (+_ 10 (*_ ow nf)) next-fill)]]
-                                                                  (nth (nth ve nf) (-_ (-_ i (*_ ow nf)) next-fill)))
-                      (harray/afill! Character/TYPE [[i eh] shown :range [(+_ (*_ ow nf) next-fill) (+_ (+_ 10 (*_ ow nf)) next-fill)]]
-                                                                  (nth (nth vefull nf) (-_ (-_ i (*_ ow nf)) next-fill)))))
+                (when (< (+ (+ (* 19 ow) 10) next-fill) (* ow oh))
+                  (doseq [nf (range 20)] (hiphip/afill! [[i eh] initial :range [(+ (* ow (long nf)) next-fill) (+ (+ 10 (* ow (long nf))) next-fill)]]
+                                                                  (nth (nth ve nf) (- (- i (* ow (long nf))) next-fill)))
+                      (harray/afill! Character/TYPE [[i eh] shown :range [(+ (* ow (long nf)) next-fill) (+ (+ 10 (* ow (long nf))) next-fill)]]
+                                                                  (nth (nth vefull nf) (- (- i (* ow (long nf))) next-fill)))))
                 (recur
                  (long
-                   (if (<_ (rem_ (+_ 40 (quot_ next-fill ow)) oh) (quot_ next-fill ow))
+                   (if (< (rem (+ 40 (quot next-fill ow)) oh) (quot next-fill ow))
                      (condp = started-indent
-                       0 (+_ (+_  (* ow 10) 10) (rem_ next-fill ow))
-                       1 (+_ (+_  (* ow 20) 10) (rem_ next-fill ow))
-                       2 (+_ (+_  (* ow 30) 10) (rem_ next-fill ow))
-                       3 (+_                10  (rem_ next-fill ow))
+                       0 (+ (+  (* ow 10) 10) (rem next-fill ow))
+                       1 (+ (+  (* ow 20) 10) (rem next-fill ow))
+                       2 (+ (+  (* ow 30) 10) (rem next-fill ow))
+                       3 (+                10  (rem next-fill ow))
                        )
-                       (+_ (*_ 40 ow) next-fill) ) )
-                 (long (if (<_ (rem_ (+_ 40 (quot_ next-fill ow)) oh) (quot_ next-fill ow))
-                   (rem_ (+_ 1 started-indent) 4)
+                       (+ (* 40 ow) next-fill) ) )
+                 (long (if (< (rem (+ 40 (quot next-fill ow)) oh) (quot next-fill ow))
+                   (rem (+ 1 started-indent) 4)
                    started-indent))
                  ))))
     ;(doall (map #(println (apply str %)) (partition ow (vec shown))))
-    [(hiphip/amake [i (*_ wide high)] (if (or
-			(= (rem_ i wide) 0)
-			(= (rem_ i wide) (+_ -1 wide))
-			(<_ i wide)
-			(>_ i (-_ (*_ wide high) wide)))
+    [(hiphip/amake [i (* wide high)] (if (or
+			(= (rem i wide) 0)
+			(= (rem i wide) (+ -1 wide))
+			(< i wide)
+			(> i (- (* wide high) wide)))
 		 wall
-		 (hiphip/aget initial (+_ (+_ (+_ (*_ 10 ow) -10) (*_ 20 (quot_ i wide))) (-_ (-_ i (+_ -1 wide)) (*_ 2 (quot_ i wide)))))))
+		 (hiphip/aget initial (+ (+ (+ (* 10 ow) -10) (* 20 (quot i wide))) (- (- i (+ -1 wide)) (* 2 (quot i wide)))))))
 
-     (harray/amake Character/TYPE [i (*_ wide high)] (if (or
-			(= (rem_ i wide) 0)
-			(= (rem_ i wide) (+_ -1 wide))
-			(<_ i wide)
-			(>_ i (-_ (*_ wide high) wide)))
+     (harray/amake Character/TYPE [i (* wide high)] (if (or
+			(= (rem i wide) 0)
+			(= (rem i wide) (+ -1 wide))
+			(< i wide)
+			(> i (- (* wide high) wide)))
 		 \#
-		 (aget shown (+_ (+_ (+_ (*_ 10 ow) -10) (*_ 20 (quot_ i wide))) (-_ (-_ i (+_ -1 wide)) (*_ 2 (quot_ i wide)))))))
+		 (aget shown (+ (+ (+ (* 10 ow) -10) (* 20 (quot i wide))) (- (- i (+ -1 wide)) (* 2 (quot i wide)))))))
                                        ]))
 
 (defn ^"[[F" dungeon-resistances [^doubles dungeon]
                  (let [res2d (make-array Float/TYPE wide high)]
                    (doseq [x (range wide) y (range high)]
                      (aset res2d x y (if
-                                       (= (hiphip/aget ^doubles dungeon (+_ x (*_ wide y))) (double wall))
+                                       (= (hiphip/aget ^doubles dungeon (+ (long x) (* wide (long y)))) (double wall))
                                        (float 1.0)
                                        (float 0.0))))
                    res2d))
@@ -137,11 +126,11 @@
   ;                                     (float 1.0)
   ;                                     ))
   ;                 res2d)]
-          (. fov calculateFOV @res (int (rem_ (:pos @entity) wide)) (int (quot_ (:pos @entity) wide)) (float 1.0) (float (/ 1.0 (double (:vision @entity)))) BasicRadiusStrategy/DIAMOND)]
-      (doseq [ idx (range (*_ wide high))]
+          (. fov calculateFOV @res (int (rem (:pos @entity) wide)) (int (quot (:pos @entity) wide)) (float 1.0) (float (/ 1.0 (double (:vision @entity)))) BasicRadiusStrategy/DIAMOND)]
+      (doseq [ idx (range (* wide high))]
          (aset ^"[Z" (:full-seen @entity) idx
             (boolean (or (aget ^"[Z" (:full-seen @entity) idx)
-                (if (> (double (aget ^"[[F" calculated (rem_ idx wide) (quot_ idx wide))) 0.0)
+                (if (> (double (aget ^"[[F" calculated (rem idx wide) (quot idx wide))) 0.0)
                   true
                   false)
 
@@ -151,18 +140,18 @@
 
 (defn run-fov
   ([entity dd]
-    (let [^"[[F" calculated (. fov calculateFOV @res (rem_ (:pos @entity) wide) (quot_ (:pos @entity) wide) 1.0 (/ 1.0 (double (:vision @entity))) BasicRadiusStrategy/DIAMOND)]
+    (let [^"[[F" calculated (. fov calculateFOV @res (rem (:pos @entity) wide) (quot (:pos @entity) wide) 1.0 (/ 1.0 (double (:vision @entity))) BasicRadiusStrategy/DIAMOND)]
       calculated))
   ([entity dd distance]
-    (let [^"[[F" calculated (. fov calculateFOV @res (rem_ (:pos @entity) wide) (quot_ (:pos @entity) wide) 1.0 (/ 1.0 (double distance)) BasicRadiusStrategy/DIAMOND)]
+    (let [^"[[F" calculated (. fov calculateFOV @res (rem (:pos @entity) wide) (quot (:pos @entity) wide) 1.0 (/ 1.0 (double distance)) BasicRadiusStrategy/DIAMOND)]
       calculated)))
 (defn check-los
   [start end distance]
      (. los isReachable @res (mod start wide) (quot start wide) (mod end wide) (quot end wide) distance 1.0 BasicRadiusStrategy/DIAMOND)) ; (/ 1.0 distance)
 
-(defn init-dungeon ([dngn] (loop [ctr 0] (if (>= ctr  1) (hiphip/aclone dngn) (let [rand-loc (rand-int (*_ wide high))] (if (= (hiphip/aget dngn rand-loc) floor)
+(defn init-dungeon ([dngn] (loop [ctr 0] (if (>= ctr  1) (hiphip/aclone dngn) (let [rand-loc (rand-int (* wide high))] (if (= (hiphip/aget dngn rand-loc) floor)
 			                                                        (recur (do (hiphip/aset dngn rand-loc GOAL) (inc ctr))) (recur ctr))))))
-  ([dngn entity] (loop [ctr 0] (if (>= ctr 1) entity (let [rand-loc (rand-int (*_ wide high))] (if (and
+  ([dngn entity] (loop [ctr 0] (if (>= ctr 1) entity (let [rand-loc (rand-int (* wide high))] (if (and
                                                                                     (apply distinct? (concat (filter (complement nil?)
                                                                                                              (map (fn [atm] (if (= (:pos @atm) 0) nil (:pos @atm))) @monsters))
                                                                                                         [rand-loc (:pos @player)]))
@@ -182,10 +171,10 @@
 			                                                        (recur (do (swap! entity assoc :pos rand-loc) (inc ctr))) (recur ctr)))))))
 
 (defn alter-dungeon
-  ([dngn cell] (loop [ctr 0] (if (>= ctr  1) dngn (let [rand-loc (rand-int (*_ wide high))]
+  ([dngn cell] (loop [ctr 0] (if (>= ctr  1) dngn (let [rand-loc (rand-int (* wide high))]
                                                     (if (= (hiphip/aget dngn rand-loc) floor)
 			                                                        (recur (do (hiphip/aset dngn rand-loc cell) (inc ctr))) (recur ctr))))))
-  ([dngn shown cell shown-cell filt] (loop [ctr 0] (if (>= ctr  1) dngn (let [rand-loc (rand-int (*_ wide high))]
+  ([dngn shown cell shown-cell filt] (loop [ctr 0] (if (>= ctr  1) dngn (let [rand-loc (rand-int (* wide high))]
                                                          (if (filt (hiphip/aget ^doubles dngn rand-loc))
 			                                                        (recur (do (aset ^chars shown ^int rand-loc ^char shown-cell) (hiphip/aset ^doubles dngn rand-loc cell) (inc ctr))) (recur ctr)))))))
 
@@ -218,17 +207,17 @@
   ([a closed open-cells]
      (loop [open open-cells]
        (when (seq open)
-         (recur (reduce (fn [newly-open [i ^double v]]
+         (recur (reduce (fn [newly-open [^long i ^double v]]
                           (reduce (fn [acc dir]
                                     (if (or (closed dir) (open dir)
                                             (>= (+ 1.0 v) (hiphip/aget ^doubles a dir)))
                                       acc
                                       (do (hiphip/aset ^doubles a dir (+ 1.0 v))
                                           (assoc acc dir (+ 1.0 v)))))
-                                  newly-open, [(-_ i wide)
-                                               (+_ i wide)
-                                               (-_ i 1)
-                                               (+_ i 1)]))
+                                  newly-open, [(- i wide)
+                                               (+ i wide)
+                                               (- i 1)
+                                               (+ i 1)]))
                         {}, open))))
      a))
 
@@ -240,7 +229,7 @@
   ([a closed open-cells center radius]
      (loop [open open-cells ctr 0]
        (if (and (seq open) (< ctr (long radius)))
-         (recur (reduce (fn [newly-open [i ^double v]]
+         (recur (reduce (fn [newly-open [^long i ^double v]]
                           (reduce (fn [acc dir]
                                     (if (or (closed dir) (open dir)
                                             (>= (+ 1.0 v) (hiphip/aget ^doubles a dir)))
@@ -248,10 +237,10 @@
                                       (do
                                           (hiphip/aset ^doubles a dir (+ 1.0 v))
                                           (assoc acc dir (+ 1.0 v)))))
-                                  newly-open, [(-_ i wide)
-                                               (+_ i wide)
-                                               (-_ i 1)
-                                               (+_ i 1)]))
+                                  newly-open, [(- i wide)
+                                               (+ i wide)
+                                               (- i 1)
+                                               (+ i 1)]))
                         {}, open) (inc ctr))
          a))
      ))
@@ -264,7 +253,7 @@
   ([a closed open-cells center radius]
      (loop [open open-cells result (atom {}) ctr 0]
        (if (and (seq open) (< ctr (long radius)))
-         (recur (reduce (fn [newly-open [i ^double v]]
+         (recur (reduce (fn [newly-open [^long i ^double v]]
                           (reduce (fn [acc dir]
                                     (if (or (closed dir) (open dir)
                                             (>= (+ 1.0 v) (double (get @result dir 22222.0))))
@@ -272,15 +261,15 @@
                                       (do
                                           (swap! result assoc dir (+ 1.0 v))
                                           (assoc acc dir (+ 1.0 v)))))
-                                  newly-open, [(-_ i wide)
-                                               (+_ i wide)
-                                               (-_ i 1)
-                                               (+_ i 1)]))
+                                  newly-open, [(- i wide)
+                                               (+ i wide)
+                                               (- i 1)
+                                               (+ i 1)]))
                         {}, open) result (inc ctr))
          @result))
      ))
 
-(defn init-ambush-entity [dngn entity choke] (loop [ctr 0] (let [rand-loc (rand-int (*_ wide high))]
+(defn init-ambush-entity [dngn entity choke] (loop [ctr 0] (let [rand-loc (rand-int (* wide high))]
                                                                                  (if (and
                                                                                     (= (hiphip/aget ^doubles dngn rand-loc) floor)
                                                                                     (apply distinct? (concat (filter (complement nil?)
@@ -297,7 +286,7 @@
 ;    (let [chokepoints (amap ^doubles dungeon idx _ (double (if (>= (hiphip/aget ^doubles dungeon idx) wall) wall (reduce (fn [base [k v]] (+ base v)) 0 (local-dijkstra ^doubles dungeon idx 2)))))]
   (let [chokepoints (amap ^doubles dungeon idx _ (double (if (>= (hiphip/aget ^doubles dungeon idx) (double wall))
                                                            0.0
-                                                           (reduce (fn [base [k ^double v]] (if (>= v 5.0) (+_ base (if (check-los idx k 1.0) 0 1)) base)) 0 (local-dijkstra-map ^doubles dungeon idx 7)))))]
+                                                           (reduce (fn [^long base [^long k ^double v]] (if (>= v 5.0) (+ base (if (check-los idx k 1.0) 0 1)) base)) 0 (local-dijkstra-map ^doubles dungeon idx 7)))))]
     (mapv #(do (init-ambush-entity dungeon % chokepoints) %) @monsters)))
 
 (defn prepare-bones []
@@ -312,11 +301,11 @@
                        ; (println (str "In loop, worst is " worst
                         ;              "\nstart is \n" (clojure.string/join "\n" (for [l (partition wide start)] (apply str (mapv {wall \# dark \space floor \. GOAL \@ 10001.0 \< 10002.0 \>} l))))
                          ;             "\n\nclone is \n" (clojure.string/join "\n" (for [l (partition wide scanned)]  (apply str (mapv {wall \# dark \space floor \. GOAL \@ 10001.0 \< 10002.0 \>} l))))))
-                        (if (and (< (double worst) (double floor)) (> (long worst) (div_ (+_ wide high) 4)))
+                        (if (and (< (double worst) (double floor)) (> (long worst) (/ (+ wide high) 4)))
                               [(double-array (map-indexed #(if (= (double %2) (double GOAL))
                                                                        (do (aset ^chars shown %1 \<) 10001.0)
                                                                        (if (< (double %2) (double wall)) (double floor) (double %2)))
-                                                                    (alter-dungeon (dijkstra scanned) shown 10002.0 \> #(and (>=_ % (div_ (+_ wide high) 4)) (< (double %) (double floor))))))
+                                                                    (alter-dungeon (dijkstra scanned) shown 10002.0 \> #(and (>= (double %) (double (/ (+ wide high) 4))) (< (double %) (double floor))))))
                                                                 shown]
                                     (let [d0 (make-bones)
                                           d_ (first d0)
@@ -327,34 +316,35 @@
 
 (defn damage-player
   ([entity dd]
-  (do (swap! entity assoc :hp (-_ (:hp @entity) (+_ 1 (rand-int 4))))
-    (if (<=_ (:hp @player) 0)
+  (do (swap! entity assoc :hp (- (long (:hp @entity)) (inc (long (rand-int 4)))))
+    (if (<= (long (:hp @player)) 0)
       (do
         (println (str "GAME OVER.  You explored "
                           (count (filter true?
                                          (vec (concat (flatten (map #(vec (:full-seen (val %))) (dissoc @cleared-levels @dlevel))) (vec (:full-seen @player))))))
-                          " squares and reached floor " (+_ 1 @dlevel) "."
+                          " squares and reached floor " (+ 1 (long @dlevel)) "."
                           )) (System/exit 0)))))
   ([entity dd amt]
   (do (swap! entity assoc :hp amt)
-    (if (<=_ (:hp @player) 0)
+    (if (<= (long (:hp @player)) 0)
       (do
         (println (str "GAME OVER.  You explored "
                           (count (filter true?
                                          (vec (concat (flatten (map #(vec (:full-seen (val %))) (dissoc @cleared-levels @dlevel))) (vec (:full-seen @player))))))
-                          " squares and reached floor " (+_ 1 @dlevel) "."
+                          " squares and reached floor " (+ 1 (long @dlevel)) "."
                           )) (System/exit 0))))))
 
 (defn damage-monster
   ([entity dd monhash]
-  (do (swap! entity assoc :hp (-_ (:hp @entity) (+_ 2 (rand-int 6))))
-    (when (<=_ (:hp @entity) 0)
+  (do (swap! entity assoc :hp (- (long (:hp @entity)) (+ 2 (long (rand-int 6)))))
+    (when (<= (long (:hp @entity)) 0)
       (reset! monsters (remove #(= % entity) @monsters))
       (swap! monhash dissoc (:pos @entity)))
      ))
   ([entity dd monhash dice die-size]
-  (do (swap! entity assoc :hp (-_ (:hp @entity) (apply clojure.core/+ (repeatedly dice #(+_ 1 (rand-int die-size))))))
-    (when (<=_ (:hp @entity) 0)
+  (do (swap! entity assoc :hp (- (long (:hp @entity))
+                                 (long (apply clojure.core/+ (repeatedly dice #(inc (long (rand-int die-size))))))))
+    (when (<= (long (:hp @entity)) 0)
       (reset! monsters (remove #(= % entity) @monsters))
       (swap! monhash dissoc (:pos @entity)))
      )))
@@ -372,59 +362,59 @@
                                                                           ))]
                    (dijkstra new-d))
          ^"[[F" player-fov-extended (run-fov player dd 9)
-         pc-x (rem_ (:pos @player) wide)
-         pc-y (quot_ (:pos @player) wide)]
+         pc-x (rem (long (:pos @player)) wide)
+         pc-y (quot (long (:pos @player)) wide)]
                              (doseq [monster mons]
-                               (let [mon-x (rem_ (:pos @monster) wide)
-                                     mon-y (quot_ (:pos @monster) wide)
+                               (let [mon-x (rem (long (:pos @monster)) wide)
+                                     mon-y (quot (long (:pos @monster)) wide)
                                      monster-sees-player (and (> (double (aget ^"[[F" player-fov-extended mon-x mon-y)) 0.0)
-                                                              (<=_ (+_ (Math/abs (double (-_ mon-x pc-x)))
-                                                                     (Math/abs (double (-_ mon-y pc-y))))
-                                                                  (long (:vision @monster))))]
+                                                              (<= (+ (Math/abs (double (- mon-x pc-x)))
+                                                                     (Math/abs (double (- mon-y pc-y))))
+                                                                  (double (:vision @monster))))]
                                  (swap! monhash dissoc (:pos @monster))
                                  ;(println monster-sees-player)
-                                 (if (>_ (:hp @monster) 2)
+                                 (if (> (long (:hp @monster)) 2)
                                    (when monster-sees-player
                                      (swap! monster assoc :dijkstra
-                                               (let [new-d (hiphip/aclone ^doubles (:dungeon @dd))] (aset ^doubles new-d ^long (:pos @player) ^double GOAL) (dijkstra new-d monster)))
+                                               (let [new-d (hiphip/aclone ^doubles (:dungeon @dd))] (aset ^doubles new-d (long (:pos @player)) ^double GOAL) (dijkstra new-d monster)))
                                      (swap! monster assoc :wander 1))
                                    (when monster-sees-player
                                      (swap! monster assoc :dijkstra flee-map)
                                      (swap! monster assoc :wander 1)))))
                              ;(println)
                              (doseq [mon mons]
-                                (let [oldpos (:pos @mon)]
-                                (if (:dijkstra @mon) (let [orig-pos (:pos @mon)
+                                (let [oldpos (long (:pos @mon))]
+                                (if (:dijkstra @mon) (let [orig-pos (long (:pos @mon))
                                                           adjacent (shuffle [
-                                                                    (-_ orig-pos wide)
-                                                                    (+_ orig-pos wide)
-                                                                    (-_ orig-pos 1)
-                                                                    (+_ orig-pos 1)])
-                                                          lowest (reduce #(if (and
+                                                                    (- orig-pos wide)
+                                                                    (+ orig-pos wide)
+                                                                    (- orig-pos 1)
+                                                                    (+ orig-pos 1)])
+                                                          lowest (long (reduce #(if (and
                                                                                (apply distinct? (concat (map (fn [atm] (:pos @atm)) mons) [%2 (:pos @player)]))
                                                                                (< (hiphip/aget ^doubles (:dijkstra @mon) %2) (hiphip/aget ^doubles (:dijkstra @mon) %1))
                                                                                (= (hiphip/aget ^doubles (:dungeon @dd) %2) (double floor)))
                                                                             %2
                                                                             %1)
                                                                          orig-pos
-                                                                         adjacent)]
+                                                                         adjacent))]
                                                       (swap! mon assoc :pos lowest)
-                                                      (when (or (= (-_ (:pos @player) wide) (:pos @mon))
-                                                                (= (+_ (:pos @player) wide) (:pos @mon))
-                                                                (= (-_ (:pos @player) 1   ) (:pos @mon))
-                                                                (= (+_ (:pos @player) 1   ) (:pos @mon)))
+                                                      (when (or (= (- (long (:pos @player)) wide) lowest)
+                                                                (= (+ (long (:pos @player)) wide) lowest)
+                                                                (= (- (long (:pos @player)) 1   ) lowest)
+                                                                (= (+ (long (:pos @player)) 1   ) lowest))
                                                         (damage-player player dd)))
 
                                  (when (not= (:wander @mon) 0)
                                    ((rand-nth [
-                                          #(when (and (apply distinct? (concat (map (fn [atm] (:pos @atm)) mons) [(-_ (:pos @%) wide) (:pos @player)]))
-                                                      (= (hiphip/aget ^doubles (:dungeon @dd) (-_ (:pos @%) wide)) floor)) (swap! % assoc :pos (-_ (:pos @%) wide)))
-                                          #(when (and (apply distinct? (concat (map (fn [atm] (:pos @atm)) mons) [(+_ (:pos @%) wide) (:pos @player)]))
-                                                      (= (hiphip/aget ^doubles (:dungeon @dd) (+_ (:pos @%) wide)) floor)) (swap! % assoc :pos (+_ (:pos @%) wide)))
-                                          #(when (and (apply distinct? (concat (map (fn [atm] (:pos @atm)) mons) [(-_ (:pos @%) 1) (:pos @player)]))
-                                                      (= (hiphip/aget ^doubles (:dungeon @dd) (-_ (:pos @%) 1)) floor)) (swap! % assoc :pos (-_ (:pos @%) 1)))
-                                          #(when (and (apply distinct? (concat (map (fn [atm] (:pos @atm)) mons) [(+_ (:pos @%) 1) (:pos @player)]))
-                                                      (= (hiphip/aget ^doubles (:dungeon @dd) (+_ (:pos @%) 1)) floor)) (swap! % assoc :pos (+_ (:pos @%) 1)))]
+                                          #(when (and (apply distinct? (concat (map (fn [atm] (long (:pos @atm))) mons) [(- (long (:pos @%)) wide) (long (:pos @player))]))
+                                                      (= (hiphip/aget ^doubles (:dungeon @dd) (- (long (:pos @%)) wide)) floor)) (swap! % assoc :pos (- (long (:pos @%)) wide)))
+                                          #(when (and (apply distinct? (concat (map (fn [atm] (long (:pos @atm))) mons) [(+ (long (:pos @%)) wide) (long (:pos @player))]))
+                                                      (= (hiphip/aget ^doubles (:dungeon @dd) (+ (long (:pos @%)) wide)) floor)) (swap! % assoc :pos (+ (long (:pos @%)) wide)))
+                                          #(when (and (apply distinct? (concat (map (fn [atm] (long (:pos @atm))) mons) [(- (long (:pos @%)) 1) (long (:pos @player))]))
+                                                      (= (hiphip/aget ^doubles (:dungeon @dd) (- (long (:pos @%)) 1)) floor)) (swap! % assoc :pos (- (long (:pos @%)) 1)))
+                                          #(when (and (apply distinct? (concat (map (fn [atm] (long (:pos @atm))) mons) [(+ (long (:pos @%)) 1) (long (:pos @player))]))
+                                                      (= (hiphip/aget ^doubles (:dungeon @dd) (+ (long (:pos @%)) 1)) floor)) (swap! % assoc :pos (+ (long (:pos @%)) 1)))]
                                             ) mon)))
                                   (swap! monhash assoc (:pos @mon) mon))
                                  )
@@ -481,7 +471,7 @@
     (let [mon-list (drop-while #(not= target (:ident @%)) @mons)]
       (when (seq mon-list)
         (let [tgt (first mon-list)]
-      (when (> (double (aget ^"[[F" (:fov @pc) (rem_ (:pos @tgt) wide) (quot_ (:pos @tgt) wide))) 0.0)
+      (when (> (double (aget ^"[[F" (:fov @pc) (rem (:pos @tgt) wide) (quot (:pos @tgt) wide))) 0.0)
         (damage-monster tgt dd monhash 1 2)
         (move-monster @mons dd monhash))
     ))))

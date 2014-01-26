@@ -10,7 +10,8 @@
                  [org.clojure/clojure "1.5.1"]
                  [hiphip-aot "0.1.2"]
                  [com.squid/cuttlebone "1.95.1"]
-                 [play-clj "0.1.0"]]
+                 [play-clj "0.1.0"]
+                 [primitive-math "0.1.3"]]
   :repositories [["sonatype"
                   "https://oss.sonatype.org/content/repositories/snapshots/"]]
 

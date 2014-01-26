@@ -1,5 +1,5 @@
 (ns ravager.core
-  (:use ravager.logic)
+  (:use ravager.logic) ; primitive-math)
   (:require [clojure.java.io :as io]
             [hiphip.double :as hiphip]
             [play-clj.core :refer :all]
@@ -40,7 +40,7 @@
         (io/delete-file "Savefile.edn" true)))
 
 (defn make-entity
-  ([tex pos d]
+  ([tex ^long pos ^long d]
     (assoc (u/create-entity tex)
          :x (double (+ (* 32 (rem pos wide)) (* 16 (- wide (quot pos wide)))))
          :y (- (double (game :height)) 64.0 (double (* 32 (quot pos wide))))
@@ -48,7 +48,7 @@
          :width 48.0
          :height 64.0
          :pos pos))
-  ([tex x y d]
+  ([tex ^long x ^long y ^long d]
     (assoc (u/create-entity tex)
          :x (double (+ (* 32 x) (* 16 (- wide y))))
          :y (- (double (game :height)) 64.0 (double (* 32 y)))
@@ -58,7 +58,7 @@
          :pos (+ x (* y wide)))))
 
 (defn make-player
-  ([tex pos d]
+  ([tex ^long pos ^long d]
     [(assoc (u/create-entity tex)
          :x (double (+ (* 32 (rem pos wide)) (* 16 (- wide (quot pos wide)))))
          :y (- (double (game :height)) 64.0 (double (* 32 (quot pos wide))))
@@ -82,7 +82,7 @@
          :height 20.0
          :pos pos)]))
 (defn make-mob
-  ([tex pos d]
+  ([tex ^long pos ^long d]
     [(assoc (u/create-entity tex)
          :x (double (+ (* 32 (rem pos wide)) (* 16 (- wide (quot pos wide)))))
          :y (- (double (game :height)) 64.0 (double (* 32 (quot pos wide))))
@@ -108,10 +108,10 @@
 
 (defn sort-entities [ents]
   (sort #(cond
-           (< (quot (:pos %1) wide) (quot (:pos %2) wide)) -1
-           (= (quot (:pos %1) wide) (quot (:pos %2) wide)) (cond
-                                 (> (:d %1) (:d %2)) 1
-                                 (= (:d %1) (:d %2)) (if (< (:x %1) (:x %2)) -1 1)
+           (< (quot (long (:pos %1)) wide) (quot (long (:pos %2)) wide)) -1
+           (= (quot (long (:pos %1)) wide) (quot (long (:pos %2)) wide)) (cond
+                                 (> (long (:d %1)) (long (:d %2))) 1
+                                 (= (long (:d %1)) (long (:d %2))) (if (< (double (:x %1)) (double (:x %2))) -1 1)
                                  :else -1)
            :else 1)
         ents))
